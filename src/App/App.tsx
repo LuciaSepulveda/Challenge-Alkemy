@@ -6,7 +6,7 @@ import Home from "../pages/Home/Home"
 
 const App: React.FC = () => {
   return (
-    <Box bg="gray.400" w="100%">
+    <Box bg="gray.300" w="100%" marginTop={0} minHeight="2xl">
       <Header />
       <Home />
     </Box>

@@ -1,13 +1,13 @@
 import * as React from "react"
 import arreglo from "../../api/arreglo"
-import styles from "./Home.module.scss"
 import HomeBody from "../../components/HomeBody/HomeBody"
+import {registersRef} from "../../firebase"
 
 const Home: React.FC = () => {
   let result = 0
   let counter = 0
   const lastTenRegisters = []
-  let i = 0
+  const i = 0
 
   arreglo.map((elem) => {
     if (elem.type === "ingreso") {
@@ -23,23 +23,27 @@ const Home: React.FC = () => {
     counter = counter + 1
   }
 
+  registersRef.once("value", (snapshot) => {
+    const arreglo: {key: string | null; hola: any}[] = []
+    const items = snapshot.val()
+
+    snapshot.forEach((childSnapshot) => {
+      arreglo.push({key: childSnapshot.key, hola: childSnapshot.val().hola})
+    })
+    console.log(arreglo.length)
+    arreglo.map((item) => {
+      console.log(item)
+    })
+    /*for (const item in items) {
+    }*/
+  })
+
   return (
-    <div className={styles.container}>
-      {result} /{" "}
-      {lastTenRegisters.map((elem) => {
-        return (
-          <div key={i++}>
-            {elem.type}
-            {elem.amount}
-          </div>
-        )
-      })}
-      <HomeBody
-        expenses={lastTenRegisters[1].amount}
-        income={lastTenRegisters[0].amount}
-        register={arreglo}
-      />
-    </div>
+    <HomeBody
+      expenses={lastTenRegisters[1].amount}
+      income={lastTenRegisters[0].amount}
+      register={arreglo}
+    />
   )
 }
 
