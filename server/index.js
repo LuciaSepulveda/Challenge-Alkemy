@@ -11,14 +11,7 @@ const db = mysql.createPool({
     database: "tnbhW9HjMG",
     port: "3306"
 })
-/*
-app.get("/", (req, res) => {
-    const sqlInsert = "INSERT INTO Registers (concept, amount, date, type) VALUES ('PRUEBA elemento 1','50','28/02/2021','ingreso')"
-    db.query(sqlInsert, (err, result) => {
-        res.send("Hola como va")
-    })
-})
-*/
+
 app.use(cors())
 app.use(express.json())
 app.use(bodyParser.urlencoded({extended: true}))
@@ -40,6 +33,14 @@ app.post("/api/insert", (req, res) => {
     const sqlInsert = "INSERT INTO Registers (concept, amount, date, type) VALUES (?,?,?,?)"
     db.query(sqlInsert, [concept, amount, date, type], (err, result) => {
         console.log(result)
+    })
+})
+
+app.delete("/api/delete/:id", (req,res) => {
+    const id = req.params.id
+    const sqlDelete = "DELETE FROM Registers WHERE (id) = ?"
+    db.query(sqlDelete, id, (err, result) => {
+       if (err) console.log(err)
     })
 })
 
