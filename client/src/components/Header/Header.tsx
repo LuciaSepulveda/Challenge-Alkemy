@@ -6,13 +6,14 @@ const Header: React.FC = () => {
     <Flex
       align="center"
       bg="gray.200"
+      borderRadius={5}
+      boxShadow="md"
       justify="space-between"
+      margin="auto"
+      marginTop={4}
       padding="1.5rem"
       w="90%"
       wrap="wrap"
-      margin="auto"
-      marginTop={4}
-      boxShadow="md"
     >
       <Stack alignItems="center" direction="row" spacing={4}>
         <Button colorScheme="primary" m="auto" p="2">
