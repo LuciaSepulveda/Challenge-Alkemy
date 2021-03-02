@@ -2,7 +2,7 @@ import axios from "axios"
 
 import {register} from "../types/register"
 
-const addRegister = (concept: string, amount: number, date: string, type: string) => {
+export const addRegister = (concept: string, amount: number, date: string, type: string) => {
   axios
     .post("http://localhost:3001/api/insert", {
       concept: concept,
@@ -18,11 +18,11 @@ const addRegister = (concept: string, amount: number, date: string, type: string
     })
 }
 
-const deleteRegister = (id: number) => {
+export const deleteRegister = (id: number) => {
   axios.delete(`http://localhost:3001/api/delete/${id}`)
 }
 
-const getRegisters = () => {
+export const getRegisters = () => {
   axios
     .get<register[]>("http://localhost:3001/api/get")
     .then((response) => {
@@ -33,10 +33,4 @@ const getRegisters = () => {
     .catch((error) => {
       console.log(error)
     })
-}
-
-export default {
-  addRegister,
-  deleteRegister,
-  getRegisters,
 }

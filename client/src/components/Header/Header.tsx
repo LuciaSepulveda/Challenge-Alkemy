@@ -2,7 +2,7 @@ import {Button, Flex, Stack} from "@chakra-ui/react"
 import * as React from "react"
 
 interface Props {
-  change: () => void
+  change: (actual: string) => void
 }
 
 const Header: React.FC<Props> = ({change}) => {
@@ -20,11 +20,17 @@ const Header: React.FC<Props> = ({change}) => {
       wrap="wrap"
     >
       <Stack alignItems="center" direction="row" spacing={4}>
-        <Button colorScheme="primary" m="auto" p="2" onClick={change}>
+        <Button colorScheme="primary" m="auto" p="2" onClick={() => change("Operations")}>
           Home
         </Button>
         <Stack alignItems="center" direction="row" paddingX={2} paddingY={3}>
-          <Button colorScheme="primary" isLoading={false} m="auto" p="2" onClick={change}>
+          <Button
+            colorScheme="primary"
+            isLoading={false}
+            m="auto"
+            p="2"
+            onClick={() => change("Home")}
+          >
             Operations
           </Button>
         </Stack>

@@ -59,15 +59,28 @@ const HomeBody: React.FC<Props> = ({income, expenses, register, total}) => {
           </Text>
         </GridItem>
         <GridItem colSpan={2}>
-          <Text
-            align="center"
-            color="blue.500"
-            fontSize={{base: "6xl", sm: "2xl", md: "3xl"}}
-            m="auto"
-          >
-            {"$"}
-            {total}
-          </Text>
+          {total >= 0 && (
+            <Text
+              align="center"
+              color="green.400"
+              fontSize={{base: "6xl", sm: "2xl", md: "3xl"}}
+              m="auto"
+            >
+              {"$"}
+              {total}
+            </Text>
+          )}
+          {total < 0 && (
+            <Text
+              align="center"
+              color="red.400"
+              fontSize={{base: "6xl", sm: "2xl", md: "3xl"}}
+              m="auto"
+            >
+              {"-$"}
+              {-1 * total}
+            </Text>
+          )}
         </GridItem>
         <GridItem bg="gray.400" borderRadius={10} boxShadow="lg" colEnd={5} colStart={3}>
           <Text align="center" fontSize={{base: "6xl", sm: "xl", md: "2xl"}} m="auto">
@@ -75,17 +88,17 @@ const HomeBody: React.FC<Props> = ({income, expenses, register, total}) => {
           </Text>
         </GridItem>
         <GridItem bg="gray.200" colSpan={6}>
-          <Grid p={2} bg="gray.300" templateColumns="repeat(4,1fr)">
-            <Box m="auto" fontWeight="bold">
+          <Grid bg="gray.300" p={2} templateColumns="repeat(4,1fr)">
+            <Box fontWeight="bold" m="auto">
               {"Concept"}
             </Box>
-            <Box m="auto" fontWeight="bold">
+            <Box fontWeight="bold" m="auto">
               {"Amount"}
             </Box>
-            <Box m="auto" fontWeight="bold">
+            <Box fontWeight="bold" m="auto">
               {"Type"}
             </Box>
-            <Box m="auto" fontWeight="bold">
+            <Box fontWeight="bold" m="auto">
               {"Date"}
             </Box>
           </Grid>

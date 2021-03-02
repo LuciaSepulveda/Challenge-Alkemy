@@ -7,8 +7,8 @@ import Operations from "../pages/Operations/Operations"
 const App: React.FC = () => {
   const [state, setState] = React.useState<"Home" | "Operations">("Home")
 
-  const changeState = () => {
-    if (state === "Home") {
+  const changeState = (actual: string) => {
+    if (actual === "Home") {
       setState("Operations")
     } else {
       setState("Home")

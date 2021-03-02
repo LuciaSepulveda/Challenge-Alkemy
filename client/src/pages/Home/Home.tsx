@@ -36,7 +36,7 @@ const Home: React.FC = () => {
     if (status === "pending") {
       registers.map((elem) => {
         console.log(elem.type)
-        if (elem.type === "ingreso") {
+        if (elem.type === "income") {
           setIncomes((incomes) => incomes + elem.amount)
           setTotal((total) => total + elem.amount)
         } else {
