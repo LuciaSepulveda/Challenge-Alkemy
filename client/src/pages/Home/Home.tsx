@@ -1,8 +1,10 @@
+import {Box} from "@chakra-ui/react"
 import axios from "axios"
 import * as React from "react"
 import arreglo from "../../api/arreglo"
 import HomeBody from "../../components/HomeBody/HomeBody"
 import {register} from "../../types/register"
+import Header from "../../components/Header/Header"
 
 const Home: React.FC = () => {
   const [registers, setRegisters] = React.useState<register[]>([])
@@ -44,10 +46,10 @@ const Home: React.FC = () => {
       })
 
       if (registers.length > 11) {
-        counter = arreglo.length - 10
+        counter = registers.length - 10
       }
-      while (counter !== arreglo.length) {
-        lastTenRegisters[counter] = arreglo[counter]
+      while (counter !== registers.length) {
+        lastTenRegisters[counter] = registers[counter]
         counter = counter + 1
       }
       setStatus("resolved")
@@ -56,7 +58,11 @@ const Home: React.FC = () => {
     return
   }, [status])
 
-  return <HomeBody expenses={expenses} income={incomes} register={registers} total={total} />
+  return (
+    <Box bg="gray.300" w="100%" mt={0} minHeight="2xl">
+      <HomeBody expenses={expenses} income={incomes} register={registers} total={total} />
+    </Box>
+  )
 }
 
 export default Home
