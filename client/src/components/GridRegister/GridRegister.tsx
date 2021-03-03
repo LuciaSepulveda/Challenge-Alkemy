@@ -15,6 +15,7 @@ import * as React from "react"
 import {useForm} from "react-hook-form"
 import {register} from "../../types/register"
 import {updateRegister} from "../../api/functions"
+import {deleteRegister} from "../../api/functions"
 
 interface Props {
   elem: register
@@ -31,12 +32,6 @@ const GridRegister: React.FC<Props> = ({elem, updateReg}) => {
   const [update, setUpdate] = React.useState<boolean>(false)
   const [changeUpdate, setChangeUpdate] = React.useState<boolean>(false)
   const {register, handleSubmit} = useForm<FormType>()
-
-  React.useEffect(() => {
-    if (changeUpdate === true) {
-      return
-    }
-  }, [changeUpdate])
 
   const onSubmit = (data: FormType) => {
     let newConcept = ""
@@ -61,6 +56,11 @@ const GridRegister: React.FC<Props> = ({elem, updateReg}) => {
     setChangeUpdate(true)
   }
 
+  const deleteReg = (id: number) => {
+    deleteRegister(id)
+    updateReg()
+  }
+
   return (
     <Box>
       {!update && (
@@ -72,7 +72,9 @@ const GridRegister: React.FC<Props> = ({elem, updateReg}) => {
             <Button onClick={editUpdate} leftIcon={<EditIcon />}>
               Edit
             </Button>
-            <Button leftIcon={<DeleteIcon />}>Delete</Button>
+            <Button leftIcon={<DeleteIcon />} onClick={() => deleteReg(elem.id)}>
+              Delete
+            </Button>
           </HStack>
         </Grid>
       )}
