@@ -7,9 +7,10 @@ import TableRegisters from "../TableRegisters/TableRegisters"
 
 interface Props {
   registers: register[]
+  update: () => void
 }
 
-const ListOfRegisters: React.FC<Props> = ({registers}) => {
+const ListOfRegisters: React.FC<Props> = ({registers, update}) => {
   const [status, setStatus] = React.useState<Status>(Status.Init)
   const [type, setType] = React.useState<"income" | "expense" | "">("")
 
@@ -25,8 +26,10 @@ const ListOfRegisters: React.FC<Props> = ({registers}) => {
         <Button onClick={() => selectType("expense")}>Expense</Button>
       </Stack>
       {type === "" && <Box> Please select the type of registers to view</Box>}
-      {type === "income" && <TableRegisters registers={registers} type="income" />}
-      {type === "expense" && <Box>{"EXPENSE"}</Box>}
+      {type === "income" && <TableRegisters registers={registers} type="income" update={update} />}
+      {type === "expense" && (
+        <TableRegisters registers={registers} type="expense" update={update} />
+      )}
     </Box>
   )
 }

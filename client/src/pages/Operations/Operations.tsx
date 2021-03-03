@@ -6,13 +6,14 @@ import {register} from "../../types/register"
 
 interface Props {
   registers: register[]
+  update: () => void
 }
 
-const Operations: React.FC<Props> = ({registers}) => {
+const Operations: React.FC<Props> = ({registers, update}) => {
   return (
     <Box w="60%" m="auto" mt={4} bg="gray.400" p={2}>
-      <Form />
-      <ListOfRegisters registers={registers} />
+      <Form update={update} />
+      <ListOfRegisters registers={registers} update={update} />
     </Box>
   )
 }

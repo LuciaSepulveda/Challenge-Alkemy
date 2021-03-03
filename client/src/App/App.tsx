@@ -10,11 +10,12 @@ import axios from "axios"
 
 const App: React.FC = () => {
   const [status, setStatus] = React.useState<Status>(Status.Init)
+  const [update, setUpdate] = React.useState<boolean>(false)
   const [registers, setRegisters] = React.useState<register[]>([])
   const [state, setState] = React.useState<"Home" | "Operations">("Home")
 
   React.useEffect(() => {
-    if (status === "init") {
+    if (status === "init" || update === true) {
       axios
         .get("http://localhost:3001/api/get")
         .then((response) => {
@@ -25,8 +26,13 @@ const App: React.FC = () => {
           setStatus(Status.Rejected)
           console.log(error)
         })
+      if (update === true) setUpdate(false)
     }
   })
+
+  const changeUpdate = () => {
+    setUpdate(!update)
+  }
 
   const changeState = (actual: string) => {
     if (actual === "Home") {
@@ -41,7 +47,9 @@ const App: React.FC = () => {
       <Header change={changeState} />
       {status === "init" && state === "Home" && <Loading h={"2xl"} />}
       {status === "ready" && state === "Home" && <Home registers={registers} />}
-      {status === "ready" && state === "Operations" && <Operations registers={registers} />}
+      {status === "ready" && state === "Operations" && (
+        <Operations registers={registers} update={changeUpdate} />
+      )}
     </Box>
   )
 }

@@ -27,11 +27,16 @@ type FormType = {
   type: string
 }
 
-const Form: React.FC = () => {
+interface Props {
+  update: () => void
+}
+
+const Form: React.FC<Props> = ({update}) => {
   const {register, handleSubmit} = useForm<FormType>()
 
   const onSubmit = (data: FormType) => {
     addRegister(data.concept, data.amount, data.date.toString(), data.type)
+    update()
   }
 
   return (

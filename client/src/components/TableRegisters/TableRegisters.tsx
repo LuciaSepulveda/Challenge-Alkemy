@@ -2,18 +2,28 @@ import {DeleteIcon, EditIcon} from "@chakra-ui/icons"
 import {Box, Button, Flex, Grid, GridItem, HStack, Text} from "@chakra-ui/react"
 import * as React from "react"
 import {register} from "../../types/register"
-import {updateRegister} from "../../api/functions"
 import GridRegister from "../GridRegister/GridRegister"
 
 interface Props {
   registers: register[]
   type: string
+  update: () => void
 }
 
-const TableRegisters: React.FC<Props> = ({type, registers}) => {
-  const [update, setUpdate] = React.useState<boolean>(false)
-  const updateReg = (id: number, concept: string, amount: number, date: string, type: string) => {
-    updateRegister(id, concept, amount, date, type)
+const TableRegisters: React.FC<Props> = ({type, registers, update}) => {
+  const [updateReg, setUpdateReg] = React.useState<boolean>(false)
+
+  React.useEffect(() => {
+    if (updateReg === true) {
+      setUpdateReg(false)
+
+      return
+    }
+  })
+
+  const functionSetUpdate = () => {
+    setUpdateReg(true)
+    update()
   }
 
   return (
@@ -47,9 +57,17 @@ const TableRegisters: React.FC<Props> = ({type, registers}) => {
               {"Date"}
             </Box>
           </Grid>
-          {registers.map((elem) => {
-            return <GridRegister key={elem.concept + elem.id} elem={elem} />
-          })}
+          {registers
+            .filter((elem) => elem.type === type)
+            .map((elem) => {
+              return (
+                <GridRegister
+                  key={elem.concept + elem.id}
+                  elem={elem}
+                  updateReg={functionSetUpdate}
+                />
+              )
+            })}
         </GridItem>
       </Grid>
     </Flex>
