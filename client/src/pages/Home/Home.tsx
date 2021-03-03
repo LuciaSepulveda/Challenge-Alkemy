@@ -4,11 +4,15 @@ import * as React from "react"
 import arreglo from "../../api/arreglo"
 import HomeBody from "../../components/HomeBody/HomeBody"
 import {register} from "../../types/register"
+import {Status} from "../../types/status"
 import Header from "../../components/Header/Header"
 
-const Home: React.FC = () => {
-  const [registers, setRegisters] = React.useState<register[]>([])
-  const [status, setStatus] = React.useState<"init" | "pending" | "resolved" | "rejected">("init")
+interface Props {
+  registers: register[]
+}
+
+const Home: React.FC<Props> = ({registers}) => {
+  const [status, setStatus] = React.useState<Status>(Status.Init)
   const [incomes, setIncomes] = React.useState<number>(0)
   const [expenses, setExpenses] = React.useState<number>(0)
   const [total, setTotal] = React.useState<number>(0)
@@ -17,23 +21,6 @@ const Home: React.FC = () => {
 
   React.useEffect(() => {
     if (status === "init") {
-      axios
-        .get("http://localhost:3001/api/get")
-        .then((response) => {
-          setRegisters(response.data)
-          setStatus("pending")
-        })
-        .catch((error) => {
-          setStatus("rejected")
-          console.log(error)
-        })
-    }
-
-    return
-  }, [status])
-
-  React.useEffect(() => {
-    if (status === "pending") {
       registers.map((elem) => {
         console.log(elem.type)
         if (elem.type === "income") {
@@ -52,7 +39,7 @@ const Home: React.FC = () => {
         lastTenRegisters[counter] = registers[counter]
         counter = counter + 1
       }
-      setStatus("resolved")
+      setStatus(Status.Ready)
     }
 
     return

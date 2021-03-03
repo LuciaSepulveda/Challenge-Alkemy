@@ -26,11 +26,22 @@ export const getRegisters = () => {
   axios
     .get<register[]>("http://localhost:3001/api/get")
     .then((response) => {
-      const array = response.data
+      //const array = response.data
 
-      return array
+      return response
     })
     .catch((error) => {
       console.log(error)
     })
+}
+
+export const updateRegister = (
+  id: number,
+  concept: string,
+  amount: number,
+  date: string,
+  type: string,
+) => {
+  deleteRegister(id)
+  addRegister(concept, amount, date, type)
 }

@@ -31,7 +31,6 @@ const Form: React.FC = () => {
   const {register, handleSubmit} = useForm<FormType>()
 
   const onSubmit = (data: FormType) => {
-    console.log("data: ", data)
     addRegister(data.concept, data.amount, data.date.toString(), data.type)
   }
 
@@ -39,12 +38,12 @@ const Form: React.FC = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormControl>
         <FormLabel htmlFor="concept">Concept</FormLabel>
-        <Input isRequired id="concept" name="concept" placeholder="Concept" ref={register} />
+        <Input required id="concept" name="concept" placeholder="Concept" ref={register} />
       </FormControl>
       <FormControl>
         <FormLabel htmlFor="amount">Amount</FormLabel>
-        <NumberInput isRequired>
-          <NumberInputField ref={register} name="amount" id="amount" placeHolder="" />
+        <NumberInput required>
+          <NumberInputField ref={register} name="amount" id="amount" placeholder="" />
           <NumberInputStepper>
             <NumberIncrementStepper />
             <NumberDecrementStepper />
@@ -53,11 +52,11 @@ const Form: React.FC = () => {
       </FormControl>
       <FormControl>
         <FormLabel htmlFor="date">Date</FormLabel>
-        <Input isRequired ref={register} name="date" id="date" type="date"></Input>
+        <Input required ref={register} name="date" id="date" type="date"></Input>
       </FormControl>
       <FormControl>
         <FormLabel htmlFor="type">Type</FormLabel>
-        <RadioGroup isRequired>
+        <RadioGroup required>
           <Stack direction="row">
             <Radio value="income" ref={register} name="type" id="type">
               Income
