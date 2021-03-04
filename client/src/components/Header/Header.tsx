@@ -9,14 +9,13 @@ const Header: React.FC<Props> = ({change}) => {
   return (
     <Flex
       align="center"
-      bg="gray.200"
-      borderRadius={5}
+      bg="whiteAlpha.500"
       boxShadow="md"
       justify="space-between"
       margin="auto"
-      marginTop={4}
+      marginTop={0}
       padding="1.5rem"
-      w="90%"
+      w="100%"
       wrap="wrap"
     >
       <Stack alignItems="center" direction="row" spacing={4}>
