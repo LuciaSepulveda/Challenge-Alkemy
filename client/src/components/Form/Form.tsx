@@ -1,12 +1,8 @@
 import {
   Button,
-  Flex,
   FormControl,
   FormLabel,
   Input,
-  InputGroup,
-  InputLeftAddon,
-  InputRightAddon,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -28,27 +24,44 @@ type FormType = {
 }
 
 interface Props {
-  update: () => void
+  updateReg: () => void
 }
 
-const Form: React.FC<Props> = ({update}) => {
-  const {register, handleSubmit} = useForm<FormType>()
+const Form: React.FC<Props> = ({updateReg}) => {
+  const {register, handleSubmit, reset} = useForm<FormType>()
+  const [updateInfo, setUpdateInfo] = React.useState<boolean>(false)
+
+  React.useEffect(() => {
+    if (updateInfo === true) {
+      updateReg()
+      setUpdateInfo(false)
+    }
+  }, [updateInfo, updateReg])
+
+  const defaultValues = {
+    concept: "",
+    amount: undefined,
+    date: "",
+    type: "",
+  }
 
   const onSubmit = (data: FormType) => {
     addRegister(data.concept, data.amount, data.date.toString(), data.type)
-    update()
+    updateReg()
+    setUpdateInfo(true)
+    reset(defaultValues)
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormControl>
         <FormLabel htmlFor="concept">Concept</FormLabel>
-        <Input required id="concept" name="concept" placeholder="Concept" ref={register} />
+        <Input ref={register} required id="concept" name="concept" placeholder="Concept" />
       </FormControl>
       <FormControl>
         <FormLabel htmlFor="amount">Amount</FormLabel>
         <NumberInput required>
-          <NumberInputField ref={register} name="amount" id="amount" placeholder="" />
+          <NumberInputField ref={register} id="amount" name="amount" />
           <NumberInputStepper>
             <NumberIncrementStepper />
             <NumberDecrementStepper />
@@ -57,24 +70,31 @@ const Form: React.FC<Props> = ({update}) => {
       </FormControl>
       <FormControl>
         <FormLabel htmlFor="date">Date</FormLabel>
-        <Input required ref={register} name="date" id="date" type="date"></Input>
+        <Input ref={register} required id="date" name="date" type="date" />
       </FormControl>
       <FormControl>
         <FormLabel htmlFor="type">Type</FormLabel>
         <RadioGroup required>
           <Stack direction="row">
-            <Radio value="income" ref={register} name="type" id="type">
+            <Radio ref={register} id="type" name="type" value="income">
               Income
             </Radio>
-            <Radio value="expense" ref={register} name="type" id="type">
+            <Radio ref={register} id="type" name="type" value="expense">
               Expense
             </Radio>
           </Stack>
         </RadioGroup>
       </FormControl>
-      <Button type="submit" colorScheme="primary" m="auto" p="2">
-        Add
-      </Button>
+      {updateInfo && (
+        <Button isLoading colorScheme="primary" m="auto" p="2" type="submit">
+          Adding
+        </Button>
+      )}
+      {!updateInfo && (
+        <Button colorScheme="primary" m="auto" p="2" type="submit">
+          Add
+        </Button>
+      )}
     </form>
   )
 }

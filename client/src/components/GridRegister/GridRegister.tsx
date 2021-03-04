@@ -30,8 +30,29 @@ type FormType = {
 
 const GridRegister: React.FC<Props> = ({elem, updateReg}) => {
   const [update, setUpdate] = React.useState<boolean>(false)
-  const [changeUpdate, setChangeUpdate] = React.useState<boolean>(false)
+  const [updateInfo, setUpdateInfo] = React.useState<boolean>(false)
+  const [deleteInfo, setDeleteInfo] = React.useState<boolean>(false)
   const {register, handleSubmit} = useForm<FormType>()
+
+  React.useEffect(() => {
+    if (updateInfo === true && deleteInfo === false) {
+      updateReg()
+      setUpdateInfo(false)
+      setUpdate(false)
+
+      return
+    }
+  }, [updateInfo, updateReg])
+
+  React.useEffect(() => {
+    if (deleteInfo === true && updateInfo === false) {
+      updateReg()
+      setDeleteInfo(false)
+      setUpdate(false)
+
+      return
+    }
+  }, [deleteInfo, updateReg])
 
   const onSubmit = (data: FormType) => {
     let newConcept = ""
@@ -47,18 +68,14 @@ const GridRegister: React.FC<Props> = ({elem, updateReg}) => {
     if (data.date === undefined || data.date === null) newDate = elem.date
     else newDate = data.date.toString()
     updateRegister(elem.id, newConcept, newAmount, newDate, elem.type)
-    editUpdate()
     updateReg()
-  }
-
-  const editUpdate = () => {
-    setUpdate(!update)
-    setChangeUpdate(true)
+    setUpdateInfo(true)
   }
 
   const deleteReg = (id: number) => {
     deleteRegister(id)
     updateReg()
+    setDeleteInfo(true)
   }
 
   return (
@@ -69,7 +86,7 @@ const GridRegister: React.FC<Props> = ({elem, updateReg}) => {
           <Box m="auto">{elem.amount}</Box>
           <Box m="auto">{elem.date}</Box>
           <HStack>
-            <Button onClick={editUpdate} leftIcon={<EditIcon />}>
+            <Button leftIcon={<EditIcon />} onClick={() => setUpdate(true)}>
               Edit
             </Button>
             <Button leftIcon={<DeleteIcon />} onClick={() => deleteReg(elem.id)}>
@@ -81,8 +98,8 @@ const GridRegister: React.FC<Props> = ({elem, updateReg}) => {
       {update && (
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid boxShadow="md" p={2} templateColumns={{sm: "repeat(1,1fr)", md: "repeat(4,1fr)"}}>
-            <Input m="auto" defaultValue={elem.concept} name="concept" ref={register} />
-            <NumberInput m="auto" defaultValue={elem.amount}>
+            <Input ref={register} defaultValue={elem.concept} m="auto" name="concept" />
+            <NumberInput defaultValue={elem.amount} m="auto">
               <NumberInputField
                 ref={register}
                 defaultValue={elem.amount}
@@ -94,12 +111,19 @@ const GridRegister: React.FC<Props> = ({elem, updateReg}) => {
                 <NumberDecrementStepper />
               </NumberInputStepper>
             </NumberInput>
-            <Input m="auto" type="date" ref={register} name="date" defaultValue={elem.date} />
+            <Input ref={register} defaultValue={elem.date} m="auto" name="date" type="date" />
             <HStack>
-              <Button m="auto" type="submit" leftIcon={<CheckIcon />}>
-                Edit
-              </Button>
-              <Button m="auto" onClick={editUpdate} leftIcon={<CloseIcon />}>
+              {updateInfo && (
+                <Button isLoading leftIcon={<EditIcon />}>
+                  Editanding
+                </Button>
+              )}
+              {!updateInfo && (
+                <Button leftIcon={<EditIcon />} type="submit">
+                  Edit
+                </Button>
+              )}
+              <Button leftIcon={<CloseIcon />} m="auto" onClick={() => setUpdate(false)}>
                 Cancel
               </Button>
             </HStack>

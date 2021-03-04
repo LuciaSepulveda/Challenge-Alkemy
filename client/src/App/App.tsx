@@ -37,8 +37,10 @@ const App: React.FC = () => {
   const changeState = (actual: string) => {
     if (actual === "Home") {
       setState("Operations")
+      setUpdate(true)
     } else {
       setState("Home")
+      setUpdate(true)
     }
   }
 
@@ -47,9 +49,7 @@ const App: React.FC = () => {
       <Header change={changeState} />
       {status === "init" && state === "Home" && <Loading h={"2xl"} />}
       {status === "ready" && state === "Home" && <Home registers={registers} />}
-      {status === "ready" && state === "Operations" && (
-        <Operations registers={registers} update={changeUpdate} />
-      )}
+      {status === "ready" && state === "Operations" && <Operations />}
     </Box>
   )
 }

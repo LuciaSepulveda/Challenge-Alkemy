@@ -11,18 +11,19 @@ interface Props {
 }
 
 const TableRegisters: React.FC<Props> = ({type, registers, update}) => {
-  const [updateReg, setUpdateReg] = React.useState<boolean>(false)
+  const [updateRegisters, setUpdateRegisters] = React.useState<boolean>(false)
 
   React.useEffect(() => {
-    if (updateReg === true) {
-      setUpdateReg(false)
+    if (updateRegisters === true) {
+      update()
+      setUpdateRegisters(false)
 
       return
     }
-  })
+  }, [update, updateRegisters])
 
   const functionSetUpdate = () => {
-    setUpdateReg(true)
+    setUpdateRegisters(true)
     update()
   }
 
