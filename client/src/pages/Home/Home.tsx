@@ -1,14 +1,13 @@
 import {Box} from "@chakra-ui/react"
-import axios from "axios"
 import * as React from "react"
-import arreglo from "../../api/arreglo"
+import {useState} from "react"
 import HomeBody from "../../components/HomeBody/HomeBody"
 import {register} from "../../types/register"
 import {Status} from "../../types/status"
-import Header from "../../components/Header/Header"
 
 interface Props {
   registers: register[]
+  //updateInfo: boolean
 }
 
 const Home: React.FC<Props> = ({registers}) => {
@@ -16,8 +15,11 @@ const Home: React.FC<Props> = ({registers}) => {
   const [incomes, setIncomes] = React.useState<number>(0)
   const [expenses, setExpenses] = React.useState<number>(0)
   const [total, setTotal] = React.useState<number>(0)
+  const [lastTenRegisters, setLastTenRegisters] = React.useState<register[]>([])
   let counter = 0
-  const lastTenRegisters = []
+  const array: register[] = []
+  // eslint-disable-next-line prefer-const
+  //let lastTenRegisters: register[] = []
 
   React.useEffect(() => {
     if (status === "init") {
@@ -30,24 +32,41 @@ const Home: React.FC<Props> = ({registers}) => {
           setExpenses((expenses) => expenses + elem.amount)
           setTotal((total) => total - elem.amount)
         }
-      })
-
+      }) /*
       if (registers.length > 11) {
         counter = registers.length - 10
       }
       while (counter !== registers.length) {
         lastTenRegisters[counter] = registers[counter]
         counter = counter + 1
-      }
-      setStatus(Status.Ready)
+      }*/
+      setStatus(Status.Pending)
     }
 
     return
   }, [status])
 
+  if (status === "pending") {
+    if (registers.length >= 11) {
+      counter = registers.length - 10
+      console.log(counter)
+    }
+    let i = 0
+
+    while (counter !== registers.length) {
+      array[i] = registers[counter]
+      counter = counter + 1
+      i = i + 1
+    }
+    setLastTenRegisters(array)
+    setStatus(Status.Ready)
+  }
+
   return (
-    <Box bg="gray.300" w="100%" mt={0} minHeight="2xl">
-      <HomeBody expenses={expenses} income={incomes} register={registers} total={total} />
+    <Box bg="gray.300" minHeight="2xl" mt={0} w="100%">
+      {status === "ready" && (
+        <HomeBody expenses={expenses} income={incomes} register={lastTenRegisters} total={total} />
+      )}
     </Box>
   )
 }

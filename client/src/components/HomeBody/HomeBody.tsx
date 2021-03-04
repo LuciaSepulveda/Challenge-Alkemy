@@ -1,5 +1,6 @@
-import {Box, Flex, Grid, GridItem, Text} from "@chakra-ui/react"
+import {Box, Divider, Flex, Grid, GridItem, Text} from "@chakra-ui/react"
 import * as React from "react"
+
 import {register} from "../../types/register"
 
 interface Props {
@@ -13,7 +14,7 @@ const HomeBody: React.FC<Props> = ({income, expenses, register, total}) => {
   return (
     <Flex direction="column" flex={1} marginTop={10}>
       <Grid
-        bg="whiteAlpha.400"
+        bg="whiteAlpha.500"
         gap={4}
         h="auto"
         m="auto"
@@ -82,7 +83,10 @@ const HomeBody: React.FC<Props> = ({income, expenses, register, total}) => {
             </Text>
           )}
         </GridItem>
-        <GridItem bg="gray.400" borderRadius={10} boxShadow="lg" colEnd={5} colStart={3}>
+        <GridItem colSpan={6}>
+          <Divider bg="gray.400" m="auto" orientation="horizontal" w="80%" />
+        </GridItem>
+        <GridItem borderRadius={2} colEnd={5} colStart={3}>
           <Text align="center" fontSize={{base: "6xl", sm: "xl", md: "2xl"}} m="auto">
             {"Last ten registers"}
           </Text>
