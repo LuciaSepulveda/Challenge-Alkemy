@@ -9,11 +9,6 @@ const actions = {
     path: `{{destinationpath}}/{{pascalCase name}}/{{pascalCase name}}.tsx`,
     templateFile: `plop/component.tsx.hbs`,
   },
-  styles: {
-    type: "add",
-    path: `{{destinationpath}}/{{pascalCase name}}/{{pascalCase name}}.module.scss`,
-    templateFile: `plop/styles.scss.hbs`,
-  },
 }
 
 module.exports = function (plop) {
@@ -32,6 +27,6 @@ module.exports = function (plop) {
         message: "Component name",
       },
     ],
-    actions: [actions.component, actions.index, actions.styles],
+    actions: [actions.component, actions.index],
   })
 }
