@@ -1,12 +1,13 @@
-import {Box, Spinner} from "@chakra-ui/react"
+import {Box} from "@chakra-ui/react"
 import * as React from "react"
+import axios from "axios"
+
 import Header from "../components/Header/Header"
 import Home from "../pages/Home/Home"
 import Operations from "../pages/Operations/Operations"
 import {register} from "../types/register"
 import {Status} from "../types/status"
 import Loading from "../pages/Loading/Loading"
-import axios from "axios"
 
 const App: React.FC = () => {
   const [status, setStatus] = React.useState<Status>(Status.Init)
@@ -24,15 +25,10 @@ const App: React.FC = () => {
         })
         .catch((error) => {
           setStatus(Status.Rejected)
-          console.log(error)
         })
       if (update === true) setUpdate(false)
     }
-  })
-
-  const changeUpdate = () => {
-    setUpdate(!update)
-  }
+  }, [status, update])
 
   const changeState = (actual: string) => {
     if (actual === "Home") {
@@ -48,8 +44,9 @@ const App: React.FC = () => {
     <Box bg="gray.300" marginTop={0} minHeight="2xl" w="100%">
       <Header change={changeState} />
       {status === "init" && state === "Home" && <Loading h={"2xl"} />}
-      {status === "ready" && state === "Home" && <Home registers={registers} />}
+      {status === "ready" && state === "Home" && <Home registers={registers} updateInfo={update} />}
       {status === "ready" && state === "Operations" && <Operations />}
+      {status === "rejected" && <div>Error</div>}
     </Box>
   )
 }
