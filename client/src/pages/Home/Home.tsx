@@ -1,16 +1,16 @@
 import {Box} from "@chakra-ui/react"
 import * as React from "react"
-import {useState} from "react"
+
 import HomeBody from "../../components/HomeBody/HomeBody"
 import {register} from "../../types/register"
 import {Status} from "../../types/status"
 
 interface Props {
   registers: register[]
-  //updateInfo: boolean
+  updateInfo: boolean
 }
 
-const Home: React.FC<Props> = ({registers}) => {
+const Home: React.FC<Props> = ({registers, updateInfo}) => {
   const [status, setStatus] = React.useState<Status>(Status.Init)
   const [incomes, setIncomes] = React.useState<number>(0)
   const [expenses, setExpenses] = React.useState<number>(0)
@@ -18,13 +18,10 @@ const Home: React.FC<Props> = ({registers}) => {
   const [lastTenRegisters, setLastTenRegisters] = React.useState<register[]>([])
   let counter = 0
   const array: register[] = []
-  // eslint-disable-next-line prefer-const
-  //let lastTenRegisters: register[] = []
 
   React.useEffect(() => {
-    if (status === "init") {
+    if (status === "init" || updateInfo === true) {
       registers.map((elem) => {
-        console.log(elem.type)
         if (elem.type === "income") {
           setIncomes((incomes) => incomes + elem.amount)
           setTotal((total) => total + elem.amount)
@@ -32,24 +29,16 @@ const Home: React.FC<Props> = ({registers}) => {
           setExpenses((expenses) => expenses + elem.amount)
           setTotal((total) => total - elem.amount)
         }
-      }) /*
-      if (registers.length > 11) {
-        counter = registers.length - 10
-      }
-      while (counter !== registers.length) {
-        lastTenRegisters[counter] = registers[counter]
-        counter = counter + 1
-      }*/
+      })
       setStatus(Status.Pending)
     }
 
     return
-  }, [status])
+  }, [status, updateInfo, registers])
 
   if (status === "pending") {
     if (registers.length >= 11) {
       counter = registers.length - 10
-      console.log(counter)
     }
     let i = 0
 
